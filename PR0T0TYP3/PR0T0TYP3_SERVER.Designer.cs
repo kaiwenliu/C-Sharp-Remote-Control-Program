@@ -1,6 +1,6 @@
 ﻿namespace PR0T0TYP3
 {
-	partial class PR0T0TYP3_FORM
+	partial class PR0T0TYP3_SERVER
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PR0T0TYP3_FORM));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PR0T0TYP3_SERVER));
 			this.listenerAndBuilder = new System.Windows.Forms.TabControl();
 			this.builderPage = new System.Windows.Forms.TabPage();
 			this.label4 = new System.Windows.Forms.Label();
@@ -41,6 +41,7 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.portText = new System.Windows.Forms.TextBox();
 			this.listenerPage = new System.Windows.Forms.TabPage();
+			this.localBox = new System.Windows.Forms.CheckBox();
 			this.cmdButton = new System.Windows.Forms.Button();
 			this.cmdInput = new System.Windows.Forms.TextBox();
 			this.cmdOutput = new System.Windows.Forms.TextBox();
@@ -50,7 +51,7 @@
 			this.IpAddresses = new System.Windows.Forms.DataGridView();
 			this.IP_Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.saveFile = new System.Windows.Forms.SaveFileDialog();
-			this.localBox = new System.Windows.Forms.CheckBox();
+			this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.listenerAndBuilder.SuspendLayout();
 			this.builderPage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -196,6 +197,17 @@
 			this.listenerPage.TabIndex = 0;
 			this.listenerPage.Text = "Listener";
 			// 
+			// localBox
+			// 
+			this.localBox.AutoSize = true;
+			this.localBox.BackColor = System.Drawing.Color.Red;
+			this.localBox.Location = new System.Drawing.Point(74, 96);
+			this.localBox.Name = "localBox";
+			this.localBox.Size = new System.Drawing.Size(72, 21);
+			this.localBox.TabIndex = 7;
+			this.localBox.Text = "Local?";
+			this.localBox.UseVisualStyleBackColor = false;
+			// 
 			// cmdButton
 			// 
 			this.cmdButton.BackColor = System.Drawing.Color.Red;
@@ -206,6 +218,7 @@
 			this.cmdButton.TabIndex = 6;
 			this.cmdButton.Text = "Execute Command";
 			this.cmdButton.UseVisualStyleBackColor = false;
+			this.cmdButton.Click += new System.EventHandler(this.cmdButton_Click);
 			// 
 			// cmdInput
 			// 
@@ -260,7 +273,8 @@
 			this.IpAddresses.BackgroundColor = System.Drawing.Color.Red;
 			this.IpAddresses.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.IpAddresses.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.IP_Address});
+            this.IP_Address,
+            this.Number});
 			this.IpAddresses.GridColor = System.Drawing.Color.Coral;
 			this.IpAddresses.Location = new System.Drawing.Point(226, -4);
 			this.IpAddresses.MultiSelect = false;
@@ -275,16 +289,10 @@
 			this.IP_Address.HeaderText = "IP Address";
 			this.IP_Address.Name = "IP_Address";
 			// 
-			// localBox
+			// Number
 			// 
-			this.localBox.AutoSize = true;
-			this.localBox.BackColor = System.Drawing.Color.Red;
-			this.localBox.Location = new System.Drawing.Point(74, 96);
-			this.localBox.Name = "localBox";
-			this.localBox.Size = new System.Drawing.Size(72, 21);
-			this.localBox.TabIndex = 7;
-			this.localBox.Text = "Local?";
-			this.localBox.UseVisualStyleBackColor = false;
+			this.Number.HeaderText = "Number";
+			this.Number.Name = "Number";
 			// 
 			// PR0T0TYP3_FORM
 			// 
@@ -332,6 +340,7 @@
 		private System.Windows.Forms.TextBox cmdInput;
 		private System.Windows.Forms.TextBox cmdOutput;
 		private System.Windows.Forms.CheckBox localBox;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Number;
 	}
 }
 

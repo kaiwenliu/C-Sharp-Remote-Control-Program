@@ -14,11 +14,10 @@ namespace PR0T0TYP3
 	{
 		public int port { get; set; }
 		public IPAddress ip { get; set; }
-		public ArrayList messages { get; private set; }
 		public ArrayList addresses { get; private set; }
+		public List<TcpClient> list_clients = new List<TcpClient>();
 
 		Thread listenThread;
-		string bufferincmessage;
 		TcpListener tcplistener;
 
 		public void serverstart()
@@ -39,29 +38,8 @@ namespace PR0T0TYP3
 		private void HandleClientComm(object client)
 		{
 			TcpClient tcpClient = (TcpClient)client;
-			NetworkStream clientStream = tcpClient.GetStream();
-			byte[] message = new byte[4096];
-			int bytesRead;
-			while (true)
-			{
-				bytesRead = 0;
-				try
-				{
-					bytesRead = clientStream.Read(message, 0, 4096);
-				}
-				catch
-				{
-					break;
-				}
-				if (bytesRead == 0)
-				{
-					break;
-				}
-				ASCIIEncoding encoder = new ASCIIEncoding();
-				bufferincmessage = encoder.GetString(message, 0, bytesRead);
-			}
+			list_clients.Add(tcpClient);
 			addresses.Add(((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString());
-			messages.Add(bufferincmessage);
 		}
 	}
 }

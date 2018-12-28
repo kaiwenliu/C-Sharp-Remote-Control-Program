@@ -16,7 +16,7 @@ namespace PR0T0TYP3
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new PR0T0TYP3_FORM());
+			Application.Run(new PR0T0TYP3_SERVER());
 		}
 	}
 }
