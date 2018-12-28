@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Listener.cs" />
     <Compile Include="PR0T0TYP3_FORM.cs">
       <SubType>Form</SubType>
     </Compile>
