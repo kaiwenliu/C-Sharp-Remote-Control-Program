@@ -1,5 +1,5 @@
 # PR0T0TYP3
-This is a remote control software that can allow you to remotely run commands on your other computers. Although it is very barebones and
+💻 This is a remote control software that can allow you to remotely run commands on your other computers. Although it is very barebones and
 may seem very limited, it was made this way, as I do not intend for this to be used as malware. There is no "startup" feature, ports are
 not automatically opened on computers in which the client is executed, and the only ability you have is running commands. If I were to
 implement more features, this may actually be used as malware, and I don't want that. This is simply a c# program for you to draw inspiration
