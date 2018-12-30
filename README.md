@@ -1,4 +1,4 @@
-# PR0T0TYP3
+# I named it PR0T0TYP3 to be semi-edgy, won't do it again!
 💻 This is a remote control software that can allow you to remotely run commands on your other computers. Although it is very barebones and
 may seem very limited, it was made this way, as I do not intend for this to be used as malware. There is no "startup" feature, ports are
 not automatically opened on computers in which the client is executed, and the only ability you have is running commands. If I were to
