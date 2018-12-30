@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Resources;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -50,11 +51,23 @@ namespace PR0T0TYP3
 			saveFile.ShowDialog();
 			String fileDownName = saveFile.FileName;
 
+			ResourceWriter resW = new ResourceWriter("temp.resources");
+			resW.AddResource("port", port);
+			resW.AddResource("ipAddress", ipAddress);
+			resW.Generate();
+			resW.Close();
+
 			CSharpCodeProvider codeProvider = new CSharpCodeProvider();
 			ICodeCompiler icc = codeProvider.CreateCompiler();
 
 			System.CodeDom.Compiler.CompilerParameters parameters = new CompilerParameters();
-			// Add dlls here
+			parameters.ReferencedAssemblies.Add("System.IO.dll");
+			parameters.ReferencedAssemblies.Add("System.Security.Cryptography.dll");
+			parameters.ReferencedAssemblies.Add("System.dll");
+			parameters.ReferencedAssemblies.Add("System.Net.dll");
+			parameters.ReferencedAssemblies.Add("System.Resources.dll");
+
+			parameters.EmbeddedResources.Add("temp.resources");
 
 			parameters.GenerateExecutable = true;
 			parameters.OutputAssembly = fileDownName;
