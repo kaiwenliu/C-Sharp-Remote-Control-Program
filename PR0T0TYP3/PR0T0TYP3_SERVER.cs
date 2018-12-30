@@ -66,6 +66,7 @@ namespace PR0T0TYP3
 			parameters.ReferencedAssemblies.Add("System.dll");
 			parameters.ReferencedAssemblies.Add("System.Net.dll");
 			parameters.ReferencedAssemblies.Add("System.Resources.dll");
+			parameters.ReferencedAssemblies.Add("System.Collections.dll");
 
 			parameters.EmbeddedResources.Add("temp.resources");
 

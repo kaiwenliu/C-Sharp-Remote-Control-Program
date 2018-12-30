@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,14 +11,17 @@ using System.Threading.Tasks;
 
 namespace PR0T0TYP3
 {
+	//This is legit just code, doesn't actually do much here. The temp.resources file is what makes it work, however the resource file here is just a test and doesn't do much
 	class PR0T0TYP3_CLIENT
 	{
 		static void Main(String[] args)
 		{
-			//WTH its a bug!
-			ResourceManager resMan = new ResourceManager("Resources.Designer",typeof(PR0T0TYP3_CLIENT).Assembly);
-			String ipAddress = resMan.GetString("ipAddress");
-			int port = Convert.ToInt32(resMan.GetString("port"));
+			var readed = new ResourceReader("temp.resources");
+			IDictionaryEnumerator dict = readed.GetEnumerator();
+			dict.MoveNext();
+			String ipAddress = (String)dict.Value;
+			dict.MoveNext();
+			int port = Convert.ToInt32((String)dict.Value);
 
 			TcpClient tcpCli = new TcpClient();
 			tcpCli.Connect(ipAddress, port);
