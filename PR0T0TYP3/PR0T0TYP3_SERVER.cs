@@ -100,46 +100,9 @@ namespace PR0T0TYP3
 
 		private void portListenButton_Click(object sender, EventArgs e)
 		{
-			int count = 0;
-			Listener listener = new Listener();
-			IPAddress myIP = GetExternalIPAddress();
-			IPAddress localHost = GetLocalIPAddress();
-
-			if (!String.IsNullOrEmpty(portListenText.Text))
+			if (!listenerWorker.IsBusy)
 			{
-				int portToListen = Convert.ToInt32(portListenText.Text);
-				if (localBox.Checked)
-				{
-					listener.port = portToListen;
-					listener.ip = localHost;
-					listener.serverstart();
-					foreach (var item in listener.addresses)
-					{
-						IpAddresses.Rows.Add(item, count);
-						count++;
-					}
-					while (true)
-					{
-						int selected = IpAddresses.SelectedRows[0].Index;
-						clientSelected = listener.list_clients[selected];
-					}
-				}
-				else
-				{
-					listener.port = portToListen;
-					listener.ip = myIP;
-					listener.serverstart();
-					foreach (var item in listener.addresses)
-					{
-						IpAddresses.Rows.Add(item, count);
-						count++;
-					}
-					while (true)
-					{
-						int selected = IpAddresses.SelectedRows[0].Index;
-						clientSelected = listener.list_clients[selected];
-					}
-				}
+				listenerWorker.RunWorkerAsync();
 			}
 		}
 
@@ -345,22 +308,67 @@ namespace PR0T0TYP3
 
 		private void listenerWorker_DoWork(object sender, DoWorkEventArgs e)
 		{
+			int count = 0;
+			Listener listener = new Listener();
+			IPAddress myIP = GetExternalIPAddress();
+			IPAddress localHost = GetLocalIPAddress();
 
-		}
-
-		private void listenerWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-		{
-
-		}
-
-		private void listenerWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-		{
-
+			if (!String.IsNullOrEmpty(portListenText.Text))
+			{
+				int portToListen = Convert.ToInt32(portListenText.Text);
+				if (localBox.Checked)
+				{
+					listener.port = portToListen;
+					listener.ip = localHost;
+					listener.serverstart();
+					foreach (var item in listener.addresses)
+					{
+						IpAddresses.Rows.Add(item, count);
+						count++;
+					}
+					while (true)
+					{
+						if (listenerWorker.CancellationPending)
+						{
+							e.Cancel = true;
+							break;
+						}
+						int selected = IpAddresses.SelectedRows[0].Index;
+						clientSelected = listener.list_clients[selected];
+					}
+				}
+				else
+				{
+					listener.port = portToListen;
+					listener.ip = myIP;
+					listener.serverstart();
+					foreach (var item in listener.addresses)
+					{
+						IpAddresses.Rows.Add(item, count);
+						count++;
+					}
+					while (true)
+					{
+						if (listenerWorker.CancellationPending)
+						{
+							e.Cancel = true;
+							break;
+						}
+						int selected = IpAddresses.SelectedRows[0].Index;
+						clientSelected = listener.list_clients[selected];
+					}
+				}
+			}
 		}
 
 		private void stopIt_Click(object sender, EventArgs e)
 		{
 			listenerWorker.CancelAsync();
+		}
+
+		private void PR0T0TYP3_SERVER_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			Environment.Exit(0);
 		}
 	}
 }

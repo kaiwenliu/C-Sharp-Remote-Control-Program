@@ -41,6 +41,7 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.portText = new System.Windows.Forms.TextBox();
 			this.listenerPage = new System.Windows.Forms.TabPage();
+			this.stopIt = new System.Windows.Forms.Button();
 			this.localBox = new System.Windows.Forms.CheckBox();
 			this.cmdButton = new System.Windows.Forms.Button();
 			this.cmdInput = new System.Windows.Forms.TextBox();
@@ -53,7 +54,6 @@
 			this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.saveFile = new System.Windows.Forms.SaveFileDialog();
 			this.listenerWorker = new System.ComponentModel.BackgroundWorker();
-			this.stopIt = new System.Windows.Forms.Button();
 			this.listenerAndBuilder.SuspendLayout();
 			this.builderPage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -200,6 +200,18 @@
 			this.listenerPage.TabIndex = 0;
 			this.listenerPage.Text = "Listener";
 			// 
+			// stopIt
+			// 
+			this.stopIt.BackColor = System.Drawing.Color.Red;
+			this.stopIt.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.stopIt.Location = new System.Drawing.Point(120, 125);
+			this.stopIt.Name = "stopIt";
+			this.stopIt.Size = new System.Drawing.Size(100, 41);
+			this.stopIt.TabIndex = 8;
+			this.stopIt.Text = "Stop";
+			this.stopIt.UseVisualStyleBackColor = false;
+			this.stopIt.Click += new System.EventHandler(this.stopIt_Click);
+			// 
 			// localBox
 			// 
 			this.localBox.AutoSize = true;
@@ -300,20 +312,6 @@
 			// listenerWorker
 			// 
 			this.listenerWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.listenerWorker_DoWork);
-			this.listenerWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.listenerWorker_ProgressChanged);
-			this.listenerWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.listenerWorker_RunWorkerCompleted);
-			// 
-			// stopIt
-			// 
-			this.stopIt.BackColor = System.Drawing.Color.Red;
-			this.stopIt.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.stopIt.Location = new System.Drawing.Point(120, 125);
-			this.stopIt.Name = "stopIt";
-			this.stopIt.Size = new System.Drawing.Size(100, 41);
-			this.stopIt.TabIndex = 8;
-			this.stopIt.Text = "Stop";
-			this.stopIt.UseVisualStyleBackColor = false;
-			this.stopIt.Click += new System.EventHandler(this.stopIt_Click);
 			// 
 			// PR0T0TYP3_SERVER
 			// 
@@ -326,6 +324,7 @@
 			this.MaximizeBox = false;
 			this.Name = "PR0T0TYP3_SERVER";
 			this.Text = "PR0T0TYP3";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PR0T0TYP3_SERVER_FormClosing);
 			this.listenerAndBuilder.ResumeLayout(false);
 			this.builderPage.ResumeLayout(false);
 			this.builderPage.PerformLayout();
