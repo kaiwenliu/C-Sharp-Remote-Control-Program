@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Resources;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -28,6 +29,7 @@ namespace PR0T0TYP3
 		public PR0T0TYP3_SERVER()
 		{
 			InitializeComponent();
+			listenerWorker.WorkerSupportsCancellation = true;
 		}
 
 		private void tabPage2_Click(object sender, EventArgs e)
@@ -103,7 +105,7 @@ namespace PR0T0TYP3
 			IPAddress myIP = GetExternalIPAddress();
 			IPAddress localHost = GetLocalIPAddress();
 
-			if (String.IsNullOrEmpty(portListenText.Text))
+			if (!String.IsNullOrEmpty(portListenText.Text))
 			{
 				int portToListen = Convert.ToInt32(portListenText.Text);
 				if (localBox.Checked)
@@ -260,22 +262,15 @@ namespace PR0T0TYP3
 
 		private IPAddress GetExternalIPAddress()
 		{
-			IPHostEntry myIPHostEntry = Dns.GetHostEntry(Dns.GetHostName());
-
-			foreach (IPAddress myIPAddress in myIPHostEntry.AddressList)
+			try
 			{
-				byte[] ipBytes = myIPAddress.GetAddressBytes();
-
-				if (myIPAddress.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-				{
-					if (!IsPrivateIP(myIPAddress))
-					{
-						return myIPAddress;
-					}
-				}
+				String externalIP;
+				externalIP = (new WebClient()).DownloadString("http://checkip.dyndns.org/");
+				externalIP = (new Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"))
+							 .Matches(externalIP)[0].ToString();
+				return IPAddress.Parse(externalIP);
 			}
-
-			return null;
+			catch { return null; }
 		}
 
 
@@ -346,6 +341,26 @@ namespace PR0T0TYP3
 			{
 				MessageBox.Show("Make sure you select a client first!");
 			}
+		}
+
+		private void listenerWorker_DoWork(object sender, DoWorkEventArgs e)
+		{
+
+		}
+
+		private void listenerWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+		{
+
+		}
+
+		private void listenerWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+
+		}
+
+		private void stopIt_Click(object sender, EventArgs e)
+		{
+			listenerWorker.CancelAsync();
 		}
 	}
 }

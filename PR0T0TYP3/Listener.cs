@@ -22,9 +22,10 @@ namespace PR0T0TYP3
 
 		public void serverstart()
 		{
-			this.tcplistener = new TcpListener(this.ip, this.port);
+			this.tcplistener = new TcpListener(ip, port);
 			this.listenThread = new Thread(new ThreadStart(ListenForClients));
 			this.listenThread.Start();
+			this.listenThread.Join();
 		}
 
 		private void ListenForClients()

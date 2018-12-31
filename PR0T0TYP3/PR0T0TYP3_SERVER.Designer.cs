@@ -50,8 +50,10 @@
 			this.label5 = new System.Windows.Forms.Label();
 			this.IpAddresses = new System.Windows.Forms.DataGridView();
 			this.IP_Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.saveFile = new System.Windows.Forms.SaveFileDialog();
 			this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.saveFile = new System.Windows.Forms.SaveFileDialog();
+			this.listenerWorker = new System.ComponentModel.BackgroundWorker();
+			this.stopIt = new System.Windows.Forms.Button();
 			this.listenerAndBuilder.SuspendLayout();
 			this.builderPage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -182,6 +184,7 @@
 			// listenerPage
 			// 
 			this.listenerPage.BackColor = System.Drawing.Color.MidnightBlue;
+			this.listenerPage.Controls.Add(this.stopIt);
 			this.listenerPage.Controls.Add(this.localBox);
 			this.listenerPage.Controls.Add(this.cmdButton);
 			this.listenerPage.Controls.Add(this.cmdInput);
@@ -201,7 +204,7 @@
 			// 
 			this.localBox.AutoSize = true;
 			this.localBox.BackColor = System.Drawing.Color.Red;
-			this.localBox.Location = new System.Drawing.Point(74, 96);
+			this.localBox.Location = new System.Drawing.Point(74, 89);
 			this.localBox.Name = "localBox";
 			this.localBox.Size = new System.Drawing.Size(72, 21);
 			this.localBox.TabIndex = 7;
@@ -240,7 +243,7 @@
 			// 
 			this.portListenButton.BackColor = System.Drawing.Color.Red;
 			this.portListenButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.portListenButton.Location = new System.Drawing.Point(60, 125);
+			this.portListenButton.Location = new System.Drawing.Point(18, 125);
 			this.portListenButton.Name = "portListenButton";
 			this.portListenButton.Size = new System.Drawing.Size(100, 41);
 			this.portListenButton.TabIndex = 3;
@@ -250,7 +253,7 @@
 			// 
 			// portListenText
 			// 
-			this.portListenText.Location = new System.Drawing.Point(60, 63);
+			this.portListenText.Location = new System.Drawing.Point(60, 56);
 			this.portListenText.Name = "portListenText";
 			this.portListenText.Size = new System.Drawing.Size(100, 22);
 			this.portListenText.TabIndex = 2;
@@ -259,7 +262,7 @@
 			// 
 			this.label5.AutoSize = true;
 			this.label5.BackColor = System.Drawing.Color.Red;
-			this.label5.Location = new System.Drawing.Point(61, 34);
+			this.label5.Location = new System.Drawing.Point(61, 27);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(99, 17);
 			this.label5.TabIndex = 1;
@@ -294,7 +297,25 @@
 			this.Number.HeaderText = "Number";
 			this.Number.Name = "Number";
 			// 
-			// PR0T0TYP3_FORM
+			// listenerWorker
+			// 
+			this.listenerWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.listenerWorker_DoWork);
+			this.listenerWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.listenerWorker_ProgressChanged);
+			this.listenerWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.listenerWorker_RunWorkerCompleted);
+			// 
+			// stopIt
+			// 
+			this.stopIt.BackColor = System.Drawing.Color.Red;
+			this.stopIt.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.stopIt.Location = new System.Drawing.Point(120, 125);
+			this.stopIt.Name = "stopIt";
+			this.stopIt.Size = new System.Drawing.Size(100, 41);
+			this.stopIt.TabIndex = 8;
+			this.stopIt.Text = "Stop";
+			this.stopIt.UseVisualStyleBackColor = false;
+			this.stopIt.Click += new System.EventHandler(this.stopIt_Click);
+			// 
+			// PR0T0TYP3_SERVER
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -303,7 +324,7 @@
 			this.Controls.Add(this.listenerAndBuilder);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
-			this.Name = "PR0T0TYP3_FORM";
+			this.Name = "PR0T0TYP3_SERVER";
 			this.Text = "PR0T0TYP3";
 			this.listenerAndBuilder.ResumeLayout(false);
 			this.builderPage.ResumeLayout(false);
@@ -341,6 +362,8 @@
 		private System.Windows.Forms.TextBox cmdOutput;
 		private System.Windows.Forms.CheckBox localBox;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Number;
+		private System.ComponentModel.BackgroundWorker listenerWorker;
+		private System.Windows.Forms.Button stopIt;
 	}
 }
 
