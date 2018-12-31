@@ -12,16 +12,17 @@ namespace PR0T0TYP3
 {
 	class Listener
 	{
+		private PR0T0TYP3_SERVER thing;
 		public int port { get; set; }
+		public int count { get; set; }
 		public IPAddress ip { get; set; }
-		public ArrayList addresses { get; private set; }
-		public List<TcpClient> list_clients = new List<TcpClient>();
 
 		Thread listenThread;
 		TcpListener tcplistener;
 
 		public void serverstart()
 		{
+			count = 0;
 			this.tcplistener = new TcpListener(ip, port);
 			this.listenThread = new Thread(new ThreadStart(ListenForClients));
 			this.listenThread.Start();
@@ -32,6 +33,11 @@ namespace PR0T0TYP3
 		{
 			while (true)
 			{
+				if (thing.listenerWorker.CancellationPending)
+				{
+					thing.Clear();
+					break;
+				}
 				Thread clientThread = new Thread(new ParameterizedThreadStart(HandleClientComm));
 			}
 		}
@@ -39,8 +45,14 @@ namespace PR0T0TYP3
 		private void HandleClientComm(object client)
 		{
 			TcpClient tcpClient = (TcpClient)client;
-			list_clients.Add(tcpClient);
-			addresses.Add(((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString());
+			thing.connectedList.Add(tcpClient);
+			thing.AddIPAddresses(((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString(),count);
+			count += 1;
+		}
+
+		public void start_data(PR0T0TYP3_SERVER form)
+		{
+			thing = form;
 		}
 	}
 }

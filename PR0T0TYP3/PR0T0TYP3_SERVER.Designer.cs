@@ -248,6 +248,7 @@
 			this.cmdOutput.Location = new System.Drawing.Point(18, 202);
 			this.cmdOutput.Multiline = true;
 			this.cmdOutput.Name = "cmdOutput";
+			this.cmdOutput.ReadOnly = true;
 			this.cmdOutput.Size = new System.Drawing.Size(749, 142);
 			this.cmdOutput.TabIndex = 4;
 			// 
@@ -294,6 +295,7 @@
 			this.IpAddresses.Location = new System.Drawing.Point(226, -4);
 			this.IpAddresses.MultiSelect = false;
 			this.IpAddresses.Name = "IpAddresses";
+			this.IpAddresses.ReadOnly = true;
 			this.IpAddresses.RowTemplate.Height = 24;
 			this.IpAddresses.Size = new System.Drawing.Size(569, 188);
 			this.IpAddresses.TabIndex = 0;
@@ -361,8 +363,8 @@
 		private System.Windows.Forms.TextBox cmdOutput;
 		private System.Windows.Forms.CheckBox localBox;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Number;
-		private System.ComponentModel.BackgroundWorker listenerWorker;
 		private System.Windows.Forms.Button stopIt;
+		public System.ComponentModel.BackgroundWorker listenerWorker;
 	}
 }
 

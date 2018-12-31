@@ -24,7 +24,18 @@ namespace PR0T0TYP3
 	{
 		public string bufferincmessage { get; private set; }
 
-		public TcpClient clientSelected { get; set; }
+		public List<TcpClient> connectedList { get; set; }
+
+		public void AddIPAddresses(String item, int count)
+		{
+			IpAddresses.Rows.Add(item, count);
+		}
+
+		public void Clear()
+		{
+			IpAddresses.Rows.Clear();
+			IpAddresses.Refresh();
+		}
 
 		public PR0T0TYP3_SERVER()
 		{
@@ -296,20 +307,22 @@ namespace PR0T0TYP3
 		{
 			try
 			{
+				int selection = IpAddresses.SelectedRows[0].Index;
+				TcpClient clientSelected = connectedList[selection];
 				byte[] command = Encoding.ASCII.GetBytes(cmdInput.Text);
 				NetworkStream curStream = clientSelected.GetStream();
 				curStream.Write(command, 0, command.Length);
 			}
-			catch (Exception)
+			catch (Exception exc)
 			{
-				MessageBox.Show("Make sure you select a client first!");
+				MessageBox.Show("Make sure you select a client first by selecting the sideways black triangle!\n\nERROR:\n" + exc, "ERROR!",MessageBoxButtons.OK,MessageBoxIcon.Error);
 			}
 		}
 
 		private void listenerWorker_DoWork(object sender, DoWorkEventArgs e)
 		{
-			int count = 0;
 			Listener listener = new Listener();
+			listener.start_data(this);
 			IPAddress myIP = GetExternalIPAddress();
 			IPAddress localHost = GetLocalIPAddress();
 
@@ -321,42 +334,12 @@ namespace PR0T0TYP3
 					listener.port = portToListen;
 					listener.ip = localHost;
 					listener.serverstart();
-					foreach (var item in listener.addresses)
-					{
-						IpAddresses.Rows.Add(item, count);
-						count++;
-					}
-					while (true)
-					{
-						if (listenerWorker.CancellationPending)
-						{
-							e.Cancel = true;
-							break;
-						}
-						int selected = IpAddresses.SelectedRows[0].Index;
-						clientSelected = listener.list_clients[selected];
-					}
 				}
 				else
 				{
 					listener.port = portToListen;
 					listener.ip = myIP;
 					listener.serverstart();
-					foreach (var item in listener.addresses)
-					{
-						IpAddresses.Rows.Add(item, count);
-						count++;
-					}
-					while (true)
-					{
-						if (listenerWorker.CancellationPending)
-						{
-							e.Cancel = true;
-							break;
-						}
-						int selected = IpAddresses.SelectedRows[0].Index;
-						clientSelected = listener.list_clients[selected];
-					}
 				}
 			}
 		}
