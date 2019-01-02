@@ -42,8 +42,6 @@ namespace PR0T0TYP3
 			{
 				if (thing.listenerWorker.CancellationPending)
 				{
-					thing.IpAddresses.Invoke(new Action(() => { thing.IpAddresses.Rows.Clear(); }));
-					thing.IpAddresses.Invoke(new Action(() => { thing.IpAddresses.Refresh(); }));
 					break;
 				}
 				TcpClient tcpClient = this.tcplistener.AcceptTcpClient();

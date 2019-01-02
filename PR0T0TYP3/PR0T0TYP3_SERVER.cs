@@ -168,7 +168,7 @@ namespace PR0T0TYP3
 
 			theAes.Key = stringToByteArray("dd0ecb45c37b2fa02f7d924de0e48301"); //You may replace this key with any AES 128-bit key
 
-			someString = someString.PadLeft(128);
+			theAes.Padding = PaddingMode.PKCS7;
 
 			var encryptor = theAes.CreateEncryptor(theAes.Key, theAes.IV);
 
@@ -208,6 +208,8 @@ namespace PR0T0TYP3
 				aesAlg.IV = IV;
 
 				aesAlg.Mode = CipherMode.CBC;
+
+				aesAlg.Padding = PaddingMode.PKCS7;
 
 				ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
@@ -338,6 +340,8 @@ namespace PR0T0TYP3
 		private void stopIt_Click(object sender, EventArgs e)
 		{
 			listenerWorker.CancelAsync();
+			IpAddresses.Rows.Clear();
+			IpAddresses.Refresh();
 			MessageBox.Show("Listening Stopped!", "Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 

@@ -79,7 +79,7 @@ class PR0T0TYP3_CLIENT
 
 			theAes.Key = stringToByteArray("dd0ecb45c37b2fa02f7d924de0e48301"); //You may replace this key with any AES 128-bit key
 
-			someString = someString.PadLeft(128);
+			theAes.Padding = PaddingMode.PKCS7;
 
 			var encryptor = theAes.CreateEncryptor(theAes.Key, theAes.IV);
 
@@ -128,6 +128,8 @@ class PR0T0TYP3_CLIENT
 				aesAlg.IV = IV;
 
 				aesAlg.Mode = CipherMode.CBC;
+
+				aesAlg.Padding = PaddingMode.PKCS7;
 
 				ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
