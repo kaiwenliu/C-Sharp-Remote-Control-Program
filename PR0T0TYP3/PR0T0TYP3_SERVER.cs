@@ -160,7 +160,7 @@ namespace PR0T0TYP3
 
 			theAes.Key = stringToByteArray("dd0ecb45c37b2fa02f7d924de0e48301"); //You may replace this key with any AES 128-bit key
 
-			byte[] IV = new byte[theAes.BlockSize / 8];
+			byte[] IV = { }; //You may replace this with your own IV
 
 			theAes.IV = IV;
 
@@ -183,7 +183,7 @@ namespace PR0T0TYP3
 			return encrypted;
 		}
 
-		public static string decrypt(byte[] somethingElse)
+		public static string decrypt(byte[] cipherText)
 		{
 			using (Aes aesAlg = Aes.Create())
 			{
@@ -191,11 +191,7 @@ namespace PR0T0TYP3
 
 				aesAlg.Key = stringToByteArray("dd0ecb45c37b2fa02f7d924de0e48301"); //You may replace this key with any AES 128-bit key
 
-				byte[] IV = new byte[aesAlg.BlockSize / 8];
-				byte[] cipherText = new byte[somethingElse.Length - IV.Length];
-
-				Array.Copy(somethingElse, IV, IV.Length);
-				Array.Copy(somethingElse, IV.Length, cipherText, 0, cipherText.Length);
+				byte[] IV = { }; //You may replace this with your own IV
 
 				aesAlg.IV = IV;
 
