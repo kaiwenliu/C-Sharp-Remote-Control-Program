@@ -18,7 +18,7 @@ namespace PR0T0TYP3
 		static void Main(String[] args)
 		{
 			var assembly = Assembly.GetExecutingAssembly();
-			Stream fs = assembly.GetManifestResourceStream("temp.resources");
+			Stream fs = assembly.GetManifestResourceStream("Client.temp.resources");
 			var readed = new System.Resources.ResourceReader(fs);
 			IDictionaryEnumerator dict = readed.GetEnumerator();
 			dict.MoveNext();
@@ -70,19 +70,15 @@ namespace PR0T0TYP3
 		{
 			byte[] encrypted;
 
-			byte[] IV;
-
 			Aes theAes = Aes.Create();
-
-			theAes.GenerateIV();
-
-			IV = theAes.IV;
-
-			theAes.Mode = CipherMode.CBC;
 
 			theAes.Key = stringToByteArray("dd0ecb45c37b2fa02f7d924de0e48301"); //You may replace this key with any AES 128-bit key
 
-			theAes.Padding = PaddingMode.PKCS7;
+			byte[] IV = new byte[theAes.BlockSize / 8];
+
+			theAes.IV = IV;
+
+			theAes.Mode = CipherMode.CBC;
 
 			var encryptor = theAes.CreateEncryptor(theAes.Key, theAes.IV);
 
@@ -93,16 +89,12 @@ namespace PR0T0TYP3
 					using (var sWriter = new StreamWriter(crypto))
 					{
 						sWriter.Write(someString);
+						crypto.FlushFinalBlock();
+						encrypted = mem.ToArray();
 					}
-					encrypted = mem.ToArray();
 				}
 			}
-
-			var combinedIvCt = new byte[IV.Length + encrypted.Length];
-			Array.Copy(IV, 0, combinedIvCt, 0, IV.Length);
-			Array.Copy(encrypted, 0, combinedIvCt, IV.Length, encrypted.Length);
-
-			return combinedIvCt;
+			return encrypted;
 		}
 
 		public static byte[] stringToByteArray(String hex)
@@ -131,8 +123,6 @@ namespace PR0T0TYP3
 				aesAlg.IV = IV;
 
 				aesAlg.Mode = CipherMode.CBC;
-
-				aesAlg.Padding = PaddingMode.PKCS7;
 
 				ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
