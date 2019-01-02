@@ -34,7 +34,6 @@ namespace PR0T0TYP3
 		public void Clear()
 		{
 			IpAddresses.Rows.Clear();
-			IpAddresses.Refresh();
 		}
 
 		public PR0T0TYP3_SERVER()
@@ -141,15 +140,16 @@ namespace PR0T0TYP3
 
 		public static IPAddress GetLocalIPAddress()
 		{
-			var host = Dns.GetHostEntry(Dns.GetHostName());
-			foreach (var ip in host.AddressList)
+			using (var socketThing = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
 			{
-				if (ip.AddressFamily == AddressFamily.InterNetwork)
+				// Connect socket to Google's Public DNS service
+				socketThing.Connect("8.8.8.8", 65530);
+				if (!(socketThing.LocalEndPoint is IPEndPoint endPoint))
 				{
-					return ip;
+					throw new InvalidOperationException($"Error occurred casting {socketThing.LocalEndPoint} to IPEndPoint");
 				}
+				return endPoint.Address;
 			}
-			throw new Exception("No network adapters with an IPv4 address in the system!");
 		}
 
 		public static byte[] stringToByteArray(String hex)
@@ -347,6 +347,7 @@ namespace PR0T0TYP3
 		private void stopIt_Click(object sender, EventArgs e)
 		{
 			listenerWorker.CancelAsync();
+			MessageBox.Show("Listening Stopped!", "Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 		private void PR0T0TYP3_SERVER_FormClosing(object sender, FormClosingEventArgs e)

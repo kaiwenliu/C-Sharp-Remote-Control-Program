@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace PR0T0TYP3
 {
@@ -22,11 +23,17 @@ namespace PR0T0TYP3
 
 		public void serverstart()
 		{
-			count = 0;
-			this.tcplistener = new TcpListener(ip, port);
-			this.listenThread = new Thread(new ThreadStart(ListenForClients));
-			this.listenThread.Start();
-			this.listenThread.Join();
+			try
+			{
+				MessageBox.Show("Listening!", "Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				count = 0;
+				this.tcplistener = new TcpListener(ip, port);
+				this.listenThread = new Thread(new ThreadStart(ListenForClients));
+				this.tcplistener.Start();
+				this.listenThread.Start();
+				this.listenThread.Join();
+			}
+			catch (Exception) { }
 		}
 
 		private void ListenForClients()
@@ -38,13 +45,14 @@ namespace PR0T0TYP3
 					thing.Clear();
 					break;
 				}
-				Thread clientThread = new Thread(new ParameterizedThreadStart(HandleClientComm));
+				Thread clientThread = new Thread(new ThreadStart(HandleClientComm));
 			}
 		}
 
-		private void HandleClientComm(object client)
+		private void HandleClientComm()
 		{
-			TcpClient tcpClient = (TcpClient)client;
+			Console.WriteLine("Connecting");
+			TcpClient tcpClient = this.tcplistener.AcceptTcpClient();
 			thing.connectedList.Add(tcpClient);
 			thing.AddIPAddresses(((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString(),count);
 			count += 1;
