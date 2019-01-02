@@ -305,11 +305,13 @@
 			// 
 			this.IP_Address.HeaderText = "IP Address";
 			this.IP_Address.Name = "IP_Address";
+			this.IP_Address.ReadOnly = true;
 			// 
 			// Number
 			// 
 			this.Number.HeaderText = "Number";
 			this.Number.Name = "Number";
+			this.Number.ReadOnly = true;
 			// 
 			// listenerWorker
 			// 
@@ -352,7 +354,6 @@
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox portText;
 		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.DataGridView IpAddresses;
 		private System.Windows.Forms.DataGridViewTextBoxColumn IP_Address;
 		private System.Windows.Forms.Button portListenButton;
 		private System.Windows.Forms.TextBox portListenText;
@@ -365,6 +366,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn Number;
 		private System.Windows.Forms.Button stopIt;
 		public System.ComponentModel.BackgroundWorker listenerWorker;
+		public System.Windows.Forms.DataGridView IpAddresses;
 	}
 }
 

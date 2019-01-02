@@ -42,20 +42,22 @@ namespace PR0T0TYP3
 			{
 				if (thing.listenerWorker.CancellationPending)
 				{
-					thing.Clear();
+					thing.IpAddresses.Invoke(new Action(() => { thing.IpAddresses.Rows.Clear(); }));
+					thing.IpAddresses.Invoke(new Action(() => { thing.IpAddresses.Refresh(); }));
 					break;
 				}
-				Thread clientThread = new Thread(new ThreadStart(HandleClientComm));
+				TcpClient tcpClient = this.tcplistener.AcceptTcpClient();
+				if (tcpClient.Connected)
+				{
+					lock (this)
+					{
+						thing.connectedList.Add(tcpClient);
+						var addThis = ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString();
+						thing.IpAddresses.Invoke(new Action(() => { thing.IpAddresses.Rows.Add(addThis,count); }));
+						count += 1;
+					}
+				}
 			}
-		}
-
-		private void HandleClientComm()
-		{
-			Console.WriteLine("Connecting");
-			TcpClient tcpClient = this.tcplistener.AcceptTcpClient();
-			thing.connectedList.Add(tcpClient);
-			thing.AddIPAddresses(((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString(),count);
-			count += 1;
 		}
 
 		public void start_data(PR0T0TYP3_SERVER form)

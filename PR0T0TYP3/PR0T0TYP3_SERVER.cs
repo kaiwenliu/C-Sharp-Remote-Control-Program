@@ -26,20 +26,11 @@ namespace PR0T0TYP3
 
 		public List<TcpClient> connectedList { get; set; }
 
-		public void AddIPAddresses(String item, int count)
-		{
-			IpAddresses.Rows.Add(item, count);
-		}
-
-		public void Clear()
-		{
-			IpAddresses.Rows.Clear();
-		}
-
 		public PR0T0TYP3_SERVER()
 		{
 			InitializeComponent();
 			listenerWorker.WorkerSupportsCancellation = true;
+			connectedList = new List<TcpClient>();
 		}
 
 		private void tabPage2_Click(object sender, EventArgs e)
