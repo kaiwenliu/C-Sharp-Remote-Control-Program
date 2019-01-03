@@ -57,8 +57,7 @@ namespace PR0T0TYP3
 				{
 					break;
 				}
-
-				dataS = decrypt(data);
+				dataS = decrypt(Encoding.ASCII.GetString(data));
 			}
 			if (!String.IsNullOrEmpty(dataS))
 				return dataS;
@@ -66,7 +65,7 @@ namespace PR0T0TYP3
 				return null;
 		}
 
-		public static byte[] encrypt(String someString)
+		public static string encrypt(String someString)
 		{
 			byte[] encrypted;
 
@@ -74,9 +73,13 @@ namespace PR0T0TYP3
 			{
 				theAes.Key = stringToByteArray("dd0ecb45c37b2fa02f7d924de0e48301"); //You may replace this key with any AES 128-bit key
 
-				byte[] IV = new byte[] { 126, 182, 142, 1, 77, 79, 233, 113, 245, 119, 111, 19, 124, 160, 120, 17, }; //You may replace this with your own IV
+				byte[] IV = new byte[] { 0x7E, 0xB6, 0x8E, 0x01, 0x4D, 0x4F, 0xE9, 0x71, 0xF5, 0x77, 0x6F, 0x13, 0x7C, 0xA0, 0x78, 0x11, };
 
 				theAes.IV = IV;
+
+				theAes.Mode = CipherMode.CBC;
+
+				theAes.Padding = PaddingMode.PKCS7;
 
 				var encryptor = theAes.CreateEncryptor(theAes.Key, theAes.IV);
 
@@ -87,13 +90,15 @@ namespace PR0T0TYP3
 						using (var sWriter = new StreamWriter(crypto))
 						{
 							sWriter.Write(someString);
-							crypto.FlushFinalBlock();
 						}
 						encrypted = mem.ToArray();
 					}
 				}
+				var combinedIvCt = new byte[IV.Length + encrypted.Length];
+				Array.Copy(IV, 0, combinedIvCt, 0, IV.Length);
+				Array.Copy(encrypted, 0, combinedIvCt, IV.Length, encrypted.Length);
+				return Convert.ToBase64String(combinedIvCt);
 			}
-			return encrypted;
 		}
 
 		public static byte[] stringToByteArray(String hex)
@@ -105,19 +110,27 @@ namespace PR0T0TYP3
 			return bytes;
 		}
 
-		public static string decrypt(byte[] cipherText)
+		public static string decrypt(string cipherTexts)
 		{
-			PrintByteArray(cipherText);
-
-			string decrypted;
-
+			string plaintext;
 			using (AesManaged aesAlg = new AesManaged())
 			{
 				aesAlg.Key = stringToByteArray("dd0ecb45c37b2fa02f7d924de0e48301"); //You may replace this key with any AES 128-bit key
 
-				byte[] IV = new byte[] { 126, 182, 142, 1, 77, 79, 233, 113, 245, 119, 111, 19, 124, 160, 120, 17, }; //You may replace this with your own IV
+				byte[] IV = new byte[aesAlg.BlockSize / 8];
+
+				byte[] cipherTextsConvert = Convert.FromBase64String(cipherTexts);
+
+				byte[] cipherText = new byte[cipherTextsConvert.Length - IV.Length];
+
+				Array.Copy(cipherTextsConvert, IV, IV.Length);
+				Array.Copy(cipherTextsConvert, IV.Length, cipherText, 0, cipherText.Length);
 
 				aesAlg.IV = IV;
+
+				aesAlg.Mode = CipherMode.CBC;
+
+				aesAlg.Padding = PaddingMode.PKCS7;
 
 				var decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
@@ -127,23 +140,12 @@ namespace PR0T0TYP3
 					{
 						using (var srDecrypt = new StreamReader(csDecrypt))
 						{
-							decrypted = srDecrypt.ReadToEnd();
+							plaintext = srDecrypt.ReadToEnd();
 						}
 					}
 				}
 			}
-			return decrypted;
-		}
-
-		public static void PrintByteArray(byte[] bytes) //Debug
-		{
-			var sb = new StringBuilder("new byte[] { ");
-			foreach (var b in bytes)
-			{
-				sb.Append(b + ", ");
-			}
-			sb.Append("}");
-			Console.WriteLine(sb.ToString());
+			return plaintext;
 		}
 	}
 }
