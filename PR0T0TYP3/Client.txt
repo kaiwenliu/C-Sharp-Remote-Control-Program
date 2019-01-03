@@ -43,19 +43,21 @@ class PR0T0TYP3_CLIENT
 
 		public static String DownloadData(TcpClient curClient)
 		{
+			Console.WriteLine("Receiving...");
 			String dataS = "";
-			while (true)
+			NetworkStream stream = curClient.GetStream();
+			byte[] data = new byte[4096];
+			using (MemoryStream ms = new MemoryStream())
 			{
-				byte[] data = new byte[curClient.ReceiveBufferSize];
-				NetworkStream stream = curClient.GetStream();
-				int byteCount = stream.Read(data, 0, data.Length);
-
-				if (byteCount == 0)
+				int bytesRead;
+				do
 				{
-					break;
-				}
-				dataS = decrypt(Convert.ToBase64String(data));
+					bytesRead = stream.Read(data, 0, data.Length);
+					ms.Write(data, 0, bytesRead);
+				} while (stream.DataAvailable);
+				dataS = decrypt(Convert.ToBase64String(ms.ToArray()));
 			}
+			Console.WriteLine("Received: " + dataS);
 			if (!String.IsNullOrEmpty(dataS))
 				return dataS;
 			else

