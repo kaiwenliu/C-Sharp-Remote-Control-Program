@@ -74,7 +74,7 @@ namespace PR0T0TYP3
 			{
 				theAes.Key = stringToByteArray("dd0ecb45c37b2fa02f7d924de0e48301"); //You may replace this key with any AES 128-bit key
 
-				byte[] IV = new byte[] { 126, 182, 142, 1, 77, 79, 233, 113, 245, 119, 111, 19, 124, 160, 120, 17 }; //You may replace this with your own IV
+				byte[] IV = new byte[] { 126, 182, 142, 1, 77, 79, 233, 113, 245, 119, 111, 19, 124, 160, 120, 17, }; //You may replace this with your own IV
 
 				theAes.IV = IV;
 
@@ -107,13 +107,15 @@ namespace PR0T0TYP3
 
 		public static string decrypt(byte[] cipherText)
 		{
+			PrintByteArray(cipherText);
+
 			string decrypted;
 
 			using (AesManaged aesAlg = new AesManaged())
 			{
 				aesAlg.Key = stringToByteArray("dd0ecb45c37b2fa02f7d924de0e48301"); //You may replace this key with any AES 128-bit key
 
-				byte[] IV = new byte[] { 126, 182, 142, 1, 77, 79, 233, 113, 245, 119, 111, 19, 124, 160, 120, 17 }; //You may replace this with your own IV
+				byte[] IV = new byte[] { 126, 182, 142, 1, 77, 79, 233, 113, 245, 119, 111, 19, 124, 160, 120, 17, }; //You may replace this with your own IV
 
 				aesAlg.IV = IV;
 
@@ -126,12 +128,22 @@ namespace PR0T0TYP3
 						using (var srDecrypt = new StreamReader(csDecrypt))
 						{
 							decrypted = srDecrypt.ReadToEnd();
-							csDecrypt.FlushFinalBlock();
 						}
 					}
 				}
 			}
 			return decrypted;
+		}
+
+		public static void PrintByteArray(byte[] bytes) //Debug
+		{
+			var sb = new StringBuilder("new byte[] { ");
+			foreach (var b in bytes)
+			{
+				sb.Append(b + ", ");
+			}
+			sb.Append("}");
+			Console.WriteLine(sb.ToString());
 		}
 	}
 }

@@ -130,7 +130,7 @@ namespace PR0T0TYP3
 				return null;
 		}
 
-		public static IPAddress GetLocalIPAddress()
+		public static IPAddress GetLocalIPAddress() //Useless
 		{
 			using (var socketThing = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
 			{
@@ -153,7 +153,7 @@ namespace PR0T0TYP3
 			return bytes;
 		}
 
-		public static byte[] encrypt(String someString)
+		public static byte[] encrypt(String someString) //Consider using sslstream instead of this later
 		{
 			byte[] encrypted;
 
@@ -161,7 +161,7 @@ namespace PR0T0TYP3
 			{
 				theAes.Key = stringToByteArray("dd0ecb45c37b2fa02f7d924de0e48301"); //You may replace this key with any AES 128-bit key
 
-				byte[] IV = new byte[] { 126, 182, 142, 1, 77, 79, 233, 113, 245, 119, 111, 19, 124, 160, 120, 17 }; //You may replace this with your own IV
+				byte[] IV = new byte[] { 126, 182, 142, 1, 77, 79, 233, 113, 245, 119, 111, 19, 124, 160, 120, 17, }; //You may replace this with your own IV
 
 				theAes.IV = IV;
 
@@ -183,7 +183,7 @@ namespace PR0T0TYP3
 			return encrypted;
 		}
 
-		public static string decrypt(byte[] cipherText)
+		public static string decrypt(byte[] cipherText) //Consider using sslstream instead of this later
 		{
 			string decrypted;
 
@@ -191,7 +191,7 @@ namespace PR0T0TYP3
 			{
 				aesAlg.Key = stringToByteArray("dd0ecb45c37b2fa02f7d924de0e48301"); //You may replace this key with any AES 128-bit key
 
-				byte[] IV = new byte[] { 126, 182, 142, 1, 77, 79, 233, 113, 245, 119, 111, 19, 124, 160, 120, 17 }; //You may replace this with your own IV
+				byte[] IV = new byte[] { 126, 182, 142, 1, 77, 79, 233, 113, 245, 119, 111, 19, 124, 160, 120, 17, }; //You may replace this with your own IV
 
 				aesAlg.IV = IV;
 
@@ -212,7 +212,7 @@ namespace PR0T0TYP3
 			return decrypted;
 		}
 
-		private IPAddress GetExternalIPAddress()
+		private IPAddress GetExternalIPAddress() //Useless
 		{
 			try
 			{
@@ -332,7 +332,14 @@ namespace PR0T0TYP3
 
 		private void PR0T0TYP3_SERVER_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			Environment.Exit(0);
+			try
+			{
+				Environment.Exit(0);
+			}
+			catch (Exception)
+			{
+				MessageBox.Show("Application couldn't be closed", "Status", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 	}
 }

@@ -16,7 +16,7 @@ namespace PR0T0TYP3
 		private PR0T0TYP3_SERVER thing;
 		public int port { get; set; }
 		public int count { get; set; }
-		public IPAddress ip { get; set; }
+		public IPAddress ip { get; set; } //This is practically useless but I decided to keep it here
 
 		Thread listenThread;
 		TcpListener tcplistener;
@@ -27,7 +27,7 @@ namespace PR0T0TYP3
 			{
 				MessageBox.Show("Listening!", "Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				count = 0;
-				this.tcplistener = new TcpListener(ip, port);
+				this.tcplistener = new TcpListener(IPAddress.Any,port);
 				this.listenThread = new Thread(new ThreadStart(ListenForClients));
 				this.tcplistener.Start();
 				this.listenThread.Start();
