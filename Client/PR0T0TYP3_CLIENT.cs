@@ -50,7 +50,7 @@ namespace PR0T0TYP3
 			String dataS = "";
 			while (true)
 			{
-				byte[] data = new byte[256];
+				byte[] data = new byte[curClient.ReceiveBufferSize];
 				NetworkStream stream = curClient.GetStream();
 				int byteCount = stream.Read(data, 0, data.Length);
 
