@@ -29,6 +29,7 @@ namespace PR0T0TYP3
 			TcpClient tcpCli = new TcpClient();
 			tcpCli.Connect(ipAddress, port);
 
+			//Add an Async so the client exe doesn't auto close later
 			while (true)
 			{
 				String dataRcved = DownloadData(tcpCli);
