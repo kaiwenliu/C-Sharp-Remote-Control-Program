@@ -72,6 +72,7 @@ namespace PR0T0TYP3
 			System.CodeDom.Compiler.CompilerParameters parameters = new CompilerParameters();
 			parameters.ReferencedAssemblies.Add("System.IO.dll");
 			parameters.ReferencedAssemblies.Add("System.Security.dll");
+			parameters.ReferencedAssemblies.Add("System.Core.dll");
 			parameters.ReferencedAssemblies.Add("System.dll");
 			parameters.ReferencedAssemblies.Add("System.Net.dll");
 			parameters.ReferencedAssemblies.Add("System.Linq.dll");
@@ -156,26 +157,25 @@ namespace PR0T0TYP3
 		{
 			byte[] encrypted;
 
-			Aes theAes = Aes.Create();
-
-			theAes.Key = stringToByteArray("dd0ecb45c37b2fa02f7d924de0e48301"); //You may replace this key with any AES 128-bit key
-
-			byte[] IV = { }; //You may replace this with your own IV
-
-			theAes.IV = IV;
-
-			theAes.Mode = CipherMode.CBC;
-
-			var encryptor = theAes.CreateEncryptor(theAes.Key, theAes.IV);
-
-			using (var mem = new MemoryStream())
+			using (AesManaged theAes = new AesManaged())
 			{
-				using (var crypto = new CryptoStream(mem, encryptor, CryptoStreamMode.Write))
+				theAes.Key = stringToByteArray("dd0ecb45c37b2fa02f7d924de0e48301"); //You may replace this key with any AES 128-bit key
+
+				byte[] IV = new byte[] { 126, 182, 142, 1, 77, 79, 233, 113, 245, 119, 111, 19, 124, 160, 120, 17 }; //You may replace this with your own IV
+
+				theAes.IV = IV;
+
+				var encryptor = theAes.CreateEncryptor(theAes.Key, theAes.IV);
+
+				using (var mem = new MemoryStream())
 				{
-					using (var sWriter = new StreamWriter(crypto))
+					using (var crypto = new CryptoStream(mem, encryptor, CryptoStreamMode.Write))
 					{
-						sWriter.Write(someString);
-						crypto.FlushFinalBlock();
+						using (var sWriter = new StreamWriter(crypto))
+						{
+							sWriter.Write(someString);
+							crypto.FlushFinalBlock();
+						}
 						encrypted = mem.ToArray();
 					}
 				}
@@ -185,19 +185,17 @@ namespace PR0T0TYP3
 
 		public static string decrypt(byte[] cipherText)
 		{
-			using (Aes aesAlg = Aes.Create())
-			{
-				string decrypted;
+			string decrypted;
 
+			using (AesManaged aesAlg = new AesManaged())
+			{
 				aesAlg.Key = stringToByteArray("dd0ecb45c37b2fa02f7d924de0e48301"); //You may replace this key with any AES 128-bit key
 
-				byte[] IV = { }; //You may replace this with your own IV
+				byte[] IV = new byte[] { 126, 182, 142, 1, 77, 79, 233, 113, 245, 119, 111, 19, 124, 160, 120, 17 }; //You may replace this with your own IV
 
 				aesAlg.IV = IV;
 
-				aesAlg.Mode = CipherMode.CBC;
-
-				ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+				var decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
 				using (var msDecrypt = new MemoryStream(cipherText))
 				{
@@ -206,11 +204,12 @@ namespace PR0T0TYP3
 						using (var srDecrypt = new StreamReader(csDecrypt))
 						{
 							decrypted = srDecrypt.ReadToEnd();
+							csDecrypt.FlushFinalBlock();
 						}
 					}
 				}
-				return decrypted;
 			}
+			return decrypted;
 		}
 
 		private IPAddress GetExternalIPAddress()
