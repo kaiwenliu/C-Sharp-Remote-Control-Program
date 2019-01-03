@@ -49,7 +49,7 @@ namespace PR0T0TYP3
 			String dataS = "";
 			while (true)
 			{
-				byte[] data = new byte[4096];
+				byte[] data = new byte[256];
 				NetworkStream stream = curClient.GetStream();
 				int byteCount = stream.Read(data, 0, data.Length);
 
@@ -57,7 +57,7 @@ namespace PR0T0TYP3
 				{
 					break;
 				}
-				dataS = decrypt(Encoding.ASCII.GetString(data));
+				dataS = decrypt(Convert.ToBase64String(data));
 			}
 			if (!String.IsNullOrEmpty(dataS))
 				return dataS;
@@ -65,7 +65,7 @@ namespace PR0T0TYP3
 				return null;
 		}
 
-		public static string encrypt(String someString)
+		public static byte[] encrypt(String someString)
 		{
 			byte[] encrypted;
 
@@ -97,7 +97,7 @@ namespace PR0T0TYP3
 				var combinedIvCt = new byte[IV.Length + encrypted.Length];
 				Array.Copy(IV, 0, combinedIvCt, 0, IV.Length);
 				Array.Copy(encrypted, 0, combinedIvCt, IV.Length, encrypted.Length);
-				return Convert.ToBase64String(combinedIvCt);
+				return combinedIvCt;
 			}
 		}
 
