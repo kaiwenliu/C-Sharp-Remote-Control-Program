@@ -5,6 +5,9 @@ not automatically opened on computers in which the client is executed, and the o
 implement more features, this may actually be used as malware, and I don't want that. This is simply a c# program for you to draw inspiration
 from, as it was really difficult for me to write this (I only have 2 years of experience at this point).
 
+**TODO:** 
+1. I still haven't figured out how to format the command output correctly in the server's output text box, and may implement that later.
+
 # Disclaimer
 This repository is for research purposes only, the use of this code is your responsibility.
 
