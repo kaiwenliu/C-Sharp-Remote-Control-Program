@@ -130,6 +130,7 @@
 			this.log.Multiline = true;
 			this.log.Name = "log";
 			this.log.ReadOnly = true;
+			this.log.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.log.Size = new System.Drawing.Size(258, 353);
 			this.log.TabIndex = 6;
 			// 
@@ -240,6 +241,7 @@
 			this.cmdInput.Location = new System.Drawing.Point(18, 350);
 			this.cmdInput.Multiline = true;
 			this.cmdInput.Name = "cmdInput";
+			this.cmdInput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
 			this.cmdInput.Size = new System.Drawing.Size(610, 47);
 			this.cmdInput.TabIndex = 5;
 			// 
@@ -249,6 +251,7 @@
 			this.cmdOutput.Multiline = true;
 			this.cmdOutput.Name = "cmdOutput";
 			this.cmdOutput.ReadOnly = true;
+			this.cmdOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.cmdOutput.Size = new System.Drawing.Size(749, 142);
 			this.cmdOutput.TabIndex = 4;
 			// 
