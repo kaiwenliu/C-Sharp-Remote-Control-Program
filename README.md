@@ -1,5 +1,5 @@
 # C-Sharp-Remote-Control-Program
-💻 This is a remote control software that can allow you to remotely run commands on your other computers. Although it is very barebones and
+💻 This is a program that allows you to remotely run commands on your other computers. Although it is very barebones and
 may seem very limited, it was made this way, as it is a proof of concept imitating popular school administration tools. There is no "startup" feature, ports are
 not automatically opened on computers in which the client is executed, and the only ability you have is running commands. This is simply a c# program for you to draw inspiration
 from.
