@@ -1,9 +1,8 @@
 # C-Sharp-Remote-Control-Program
 💻 This is a remote control software that can allow you to remotely run commands on your other computers. Although it is very barebones and
-may seem very limited, it was made this way, as I do not intend for this to be used as malware. There is no "startup" feature, ports are
-not automatically opened on computers in which the client is executed, and the only ability you have is running commands. If I were to
-implement more features, this may actually be used as malware, and I don't want that. This is simply a c# program for you to draw inspiration
-from, as it was really difficult for me to write this (I only have 2 years of experience at this point).
+may seem very limited, it was made this way, as it is a proof of concept imitating popular school administration tools. There is no "startup" feature, ports are
+not automatically opened on computers in which the client is executed, and the only ability you have is running commands. This is simply a c# program for you to draw inspiration
+from.
 
 **TODO:** 
 1. I still haven't figured out how to format the command output correctly in the server's output text box, and may implement that later.
